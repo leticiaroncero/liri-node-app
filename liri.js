@@ -11,11 +11,12 @@ if (command === "concert-this") {
     var artist = process.argv.slice(3).join(" ");
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
         .then(function (response) {
-            for (var i = 0; i < response.length; i++) {
-                var artistEvent = response[i];
+            for (var i = 0; i < response.data.length; i++) {
+                var artistEvent = response.data[i];
                 var venueName = artistEvent.venue.name;
                 var venueLoc = artistEvent.venue.city + ", " + artistEvent.venue.region + ", " + artistEvent.venue.country;
-                var eventDate = artistEvent.datetime;
+                var eventDate = moment(artistEvent.datetime, 'YYYY-MM-DDTHH:mm:ss').format("MM/DD/YYYY");
+                console.log(venueLoc + " at " + venueName + " on " + eventDate);
             }
 
 
