@@ -57,6 +57,15 @@ if (command === "concert-this") {
     var movie = process.argv.slice(3).join(" ");
     axios.get("http://www.omdbapi.com/?apikey=" + keys.omdb + "&t=" + movie)
         .then(function (response) {
-            console.log(response.data)
-        })
+            console.log("Title: " + response.data.Title);
+            console.log("Year: " + response.data.Year);
+            console.log("IMDB Rating: " + response.data.Ratings[0].Value);
+            console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
+            console.log("Country: " + response.data.Country);
+            console.log("Language: " + response.data.Language);
+            console.log("Plot: " + response.data.Plot);
+            console.log("Actors: " + response.data.Actors);
+        }).catch(function (error) {
+            console.log("There was an error trying to find that movie.");
+        });
 }
