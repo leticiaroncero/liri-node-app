@@ -55,6 +55,9 @@ if (command === "concert-this") {
     });
 } else if (command === "movie-this") {
     var movie = process.argv.slice(3).join(" ");
+    if (movie.length === 0) {
+        movie = "Mr. Nobody"
+    }
     axios.get("http://www.omdbapi.com/?apikey=" + keys.omdb + "&t=" + movie)
         .then(function (response) {
             console.log("Title: " + response.data.Title);
