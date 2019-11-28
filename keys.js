@@ -4,3 +4,5 @@ exports.spotify = {
 };
 
 exports.bandsintown = process.env.BANDS_IN_TOWN_ID;
+
+exports.omdb = process.env.OMDB;

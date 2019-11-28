@@ -53,4 +53,10 @@ if (command === "concert-this") {
             console.log("Song Not Found")
         }
     });
+} else if (command === "movie-this") {
+    var movie = process.argv.slice(3).join(" ");
+    axios.get("http://www.omdbapi.com/?apikey=" + keys.omdb + "&t=" + movie)
+        .then(function (response) {
+            console.log(response.data)
+        })
 }
