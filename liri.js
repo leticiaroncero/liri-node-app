@@ -27,6 +27,9 @@ if (command === "concert-this") {
         });
 } else if (command === "spotify-this-song") {
     var song = process.argv.slice(3).join(" ");
+    if (song.length === 0) {
+        song = '"The Sign" artist:"Ace Of Base"';
+    }
     spotify.search({ type: 'track', query: song }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
