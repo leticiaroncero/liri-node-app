@@ -25,5 +25,29 @@ if (command === "concert-this") {
         }).catch(function (error) {
             console.log("There was an error trying to find that artist.");
         });
-}
+} else if (command === "spotify-this-song") {
+    var song = process.argv.slice(3).join(" ");
+    spotify.search({ type: 'track', query: song }, function (err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        var songsData = data.tracks.items;
+        if (songsData.length > 0) {
+            for (var i = 0; i < songsData.length; i++) {
+                //extract artists names
+                var artists = [];
+                for (var j = 0; j < songsData[i].artists.length; j++) {
+                    artists.push(songsData[i].artists[j].name);
+                }
 
+                console.log("Artist(s): " + artists.join(", "));
+                console.log("Song name: " + songsData[i].name);
+                console.log("Preview link: " + songsData[i].preview_url);
+                console.log("Album: " + songsData[i].album.name);
+                console.log("----------");
+            }
+        } else {
+            console.log("Song Not Found")
+        }
+    });
+}
