@@ -3,6 +3,7 @@ var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var axios = require("axios");
 var moment = require("moment");
+var fs = require("fs");
 
 var spotify = new Spotify(keys.spotify);
 var command = process.argv[2];
@@ -75,4 +76,8 @@ if (command === "concert-this") {
         }).catch(function (error) {
             console.log("There was an error trying to find that movie.");
         });
+} else if (command === "do-what-it-says") {
+    fs.readFile("random.txt", "utf8", function (err, contents) {
+        console.log(contents);
+    });
 }
