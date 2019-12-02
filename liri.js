@@ -10,6 +10,30 @@ var command = process.argv[2];
 
 if (command === "concert-this") {
     var artist = process.argv.slice(3).join(" ");
+    concertThis(artist);
+} else if (command === "spotify-this-song") {
+    var song = process.argv.slice(3).join(" ");
+    if (song.length === 0) {
+        song = '"The Sign" artist:"Ace Of Base"';
+    }
+    spotifyThis(song);
+} else if (command === "movie-this") {
+    var movie = process.argv.slice(3).join(" ");
+    if (movie.length === 0) {
+        movie = "Mr. Nobody"
+    }
+    movieThis(movie);
+} else if (command === "do-what-it-says") {
+    fs.readFile("random.txt", "utf8", function (err, contents) {
+        if (error) {
+            return console.log(error);
+        }
+        //call the spotify this function and contents will be query
+        console.log(contents);
+    });
+}
+
+function concertThis(artist) {
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=" + keys.bandsintown)
         .then(function (response) {
             if (response.data.length > 0) {
@@ -25,12 +49,10 @@ if (command === "concert-this") {
             }
         }).catch(function (error) {
             console.log("There was an error trying to find that artist.");
-        });
-} else if (command === "spotify-this-song") {
-    var song = process.argv.slice(3).join(" ");
-    if (song.length === 0) {
-        song = '"The Sign" artist:"Ace Of Base"';
-    }
+        })
+}
+
+function spotifyThis(song) {
     spotify.search({ type: 'track', query: song }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
@@ -54,11 +76,9 @@ if (command === "concert-this") {
             console.log("Song Not Found")
         }
     });
-} else if (command === "movie-this") {
-    var movie = process.argv.slice(3).join(" ");
-    if (movie.length === 0) {
-        movie = "Mr. Nobody"
-    }
+}
+
+function movieThis(movie) {
     axios.get("http://www.omdbapi.com/?apikey=" + keys.omdb + "&t=" + movie)
         .then(function (response) {
             if ("Error" in response.data) {
@@ -75,9 +95,5 @@ if (command === "concert-this") {
             }
         }).catch(function (error) {
             console.log("There was an error trying to find that movie.");
-        });
-} else if (command === "do-what-it-says") {
-    fs.readFile("random.txt", "utf8", function (err, contents) {
-        console.log(contents);
-    });
+        })
 }
