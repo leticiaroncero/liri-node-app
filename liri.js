@@ -7,30 +7,35 @@ var fs = require("fs");
 
 var spotify = new Spotify(keys.spotify);
 var command = process.argv[2];
+var query = process.argv.slice(3).join(" ");
 
-if (command === "concert-this") {
-    var artist = process.argv.slice(3).join(" ");
-    concertThis(artist);
-} else if (command === "spotify-this-song") {
-    var song = process.argv.slice(3).join(" ");
-    if (song.length === 0) {
-        song = '"The Sign" artist:"Ace Of Base"';
-    }
-    spotifyThis(song);
-} else if (command === "movie-this") {
-    var movie = process.argv.slice(3).join(" ");
-    if (movie.length === 0) {
-        movie = "Mr. Nobody"
-    }
-    movieThis(movie);
-} else if (command === "do-what-it-says") {
-    fs.readFile("random.txt", "utf8", function (err, contents) {
-        if (error) {
-            return console.log(error);
+processCommand(command, query);
+
+function processCommand(command, query) {
+    if (command === "concert-this") {
+        concertThis(query);
+    } else if (command === "spotify-this-song") {
+        if (query.length === 0) {
+            query = '"The Sign" artist:"Ace Of Base"';
         }
-        //call the spotify this function and contents will be query
-        console.log(contents);
-    });
+        spotifyThis(query);
+    } else if (command === "movie-this") {
+        if (query.length === 0) {
+            query = "Mr. Nobody"
+        }
+        movieThis(query);
+    } else if (command === "do-what-it-says") {
+        fs.readFile("random.txt", "utf8", function (error, contents) {
+            if (error) {
+                return console.log(error);
+            }
+
+            var randomArr = contents.split(",")
+            command = randomArr[0];
+            query = randomArr[1];
+            processCommand(command, query);
+        });
+    }
 }
 
 function concertThis(artist) {
